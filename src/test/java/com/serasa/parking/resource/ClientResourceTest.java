@@ -1,10 +1,12 @@
 package com.serasa.parking.resource;
 
 import com.serasa.parking.model.Client;
+import com.serasa.parking.model.Stay;
 import com.serasa.parking.model.Vehicle;
 import com.serasa.parking.service.ClientService;
 import com.serasa.parking.service.VehicleService;
 import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.mockito.BDDMockito.when;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 /**
@@ -66,6 +69,42 @@ public class ClientResourceTest {
         when(clientService.findAll()).thenReturn(clientList);
         ResponseEntity<String> response = restTemplate.getForEntity(uri,String.class);
         Assertions.assertThat(response.getStatusCode()).isEqualTo(OK);
+    }
+
+    @Test
+    public void findByIdSouldReturnStatus200() throws URISyntaxException {
+        RestTemplate restTemplate = new RestTemplate();
+        Client client = Client.builder()
+                .email("vincius!@teste.com")
+                .tel("121212121")
+                .birthDate(new Date())
+                .cpf("123123123")
+                .name("vinicius")
+                .build();
+        final String baseUrl = "http://localhost:" + port + "/parking/v1/client/123123123";
+        URI uri = new URI(baseUrl);
+        when(clientService.findById(client.getCpf()))
+                .thenReturn(client);
+        ResponseEntity<String> response = restTemplate.getForEntity(uri,String.class);
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(OK);
+    }
+
+    @Test
+    public void createSouldReturnStatus201() throws URISyntaxException {
+        RestTemplate restTemplate = new RestTemplate();
+        Client client = Client.builder()
+                .email("vincius!@teste.com")
+                .tel("121212121")
+                .birthDate(new Date())
+                .cpf("123123123")
+                .name("vinicius")
+                .build();
+
+        final String baseUrl = "http://localhost:" + port + "/parking/v1/client";
+        URI uri = new URI(baseUrl);
+        Assert.assertEquals(client.getCpf(),client.getCpf());
+        ResponseEntity<String> response = restTemplate.postForEntity(uri, client, String.class);
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(CREATED);
     }
 
 }

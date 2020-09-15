@@ -3,15 +3,18 @@ package com.serasa.parking.resource;
 import com.serasa.parking.model.Stay;
 import com.serasa.parking.model.Vehicle;
 import com.serasa.parking.service.StayService;
+import com.serasa.parking.service.VehicleService;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,6 +27,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.mockito.BDDMockito.when;
+import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -74,7 +78,7 @@ public class StayResourceTest {
                                 .build())
                         .build()
         );
-        final String baseUrl = "http://localhost:" + port + "/parking/v1/vehicle";
+        final String baseUrl = "http://localhost:" + port + "/parking/v1/stay";
         URI uri = new URI(baseUrl);
         when(stayService.findAll()).thenReturn(stayList);
         ResponseEntity<String> response = restTemplate.getForEntity(uri,String.class);
@@ -97,7 +101,7 @@ public class StayResourceTest {
                         .yearFabrication(2013)
                         .build())
                 .build();
-        final String baseUrl = "http://localhost:" + port + "/parking/v1/vehicle/1245";
+        final String baseUrl = "http://localhost:" + port + "/parking/v1/stay/0";
         URI uri = new URI(baseUrl);
         when(stayService.findById(stay.getId()))
                 .thenReturn(stay);
@@ -122,7 +126,7 @@ public class StayResourceTest {
                         .build())
                 .build();
 
-        final String baseUrl = "http://localhost:" + port + "/parking/v1/vehicle";
+        final String baseUrl = "http://localhost:" + port + "/parking/v1/stay";
         URI uri = new URI(baseUrl);
         Assert.assertEquals(stay.getId(),stay.getId());
         ResponseEntity<String> response = restTemplate.postForEntity(uri, stay, String.class);
