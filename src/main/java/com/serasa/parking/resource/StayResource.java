@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * @author vinicius.montouro
  */
 @RestController
-@RequestMapping("/stay")
+@RequestMapping("parking/v1/stay")
 public class StayResource {
 
     /**

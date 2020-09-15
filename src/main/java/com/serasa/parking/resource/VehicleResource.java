@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * @author vinicius.montouro
  */
 @RestController
-@RequestMapping("/vehicle")
+@RequestMapping("parking/v1/vehicle")
 public class VehicleResource {
 
     /**

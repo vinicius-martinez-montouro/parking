@@ -34,7 +34,7 @@ files/UML
 >Upload application
 >mvnw spring-boot:run
 -Inside the folder parking execute the command: Test if the API has gone up through the 
-URL http://localhost:80802/parking
+URL http://localhost:80802/parking/v1
 
 ## Docker
 
