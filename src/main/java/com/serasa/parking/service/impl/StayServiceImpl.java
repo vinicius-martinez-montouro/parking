@@ -1,5 +1,6 @@
 package com.serasa.parking.service.impl;
 
+import com.mongodb.DuplicateKeyException;
 import com.serasa.parking.dto.StayDTO;
 import com.serasa.parking.dto.StayVehicleInDTO;
 import com.serasa.parking.model.Stay;
@@ -7,6 +8,7 @@ import com.serasa.parking.model.Vehicle;
 import com.serasa.parking.repository.StayRepository;
 import com.serasa.parking.repository.VehicleRepository;
 import com.serasa.parking.service.StayService;
+import com.serasa.parking.service.exception.ObjectDuplicateException;
 import com.serasa.parking.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author vinicius.montouro
+ */
 @Service
 public class StayServiceImpl implements StayService {
 

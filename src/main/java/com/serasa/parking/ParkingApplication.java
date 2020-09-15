@@ -3,6 +3,9 @@ package com.serasa.parking;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author vinicius.montouro
+ */
 @SpringBootApplication
 public class ParkingApplication {
 

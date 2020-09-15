@@ -1,5 +1,6 @@
 package com.serasa.parking.resource.exception;
 
+import com.serasa.parking.service.exception.ObjectDuplicateException;
 import com.serasa.parking.service.exception.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,4 +20,11 @@ public class ResourceExceptionHandler {
                 .body(new StandardError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(),
                         "Object not found",e.getMessage(),request.getRequestURI()));
     }
+    public ResponseEntity<StandardError> objectDuplicate(ObjectDuplicateException e, HttpServletRequest request){
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new StandardError(System.currentTimeMillis(), HttpStatus.CONFLICT.value(),
+                        "Object Duplicate",e.getMessage(),request.getRequestURI()));
+    }
+
 }

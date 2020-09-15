@@ -12,7 +12,26 @@ services:
       - /home/mongo/Desenvolvimento/Docker/Volumes/MongoDB:/data/db
     networks:
       - mongo-compose-network
-
+  parking:
+    image: parking
+    restart: always
+    build: ../
+    working_dir: /parking
+    environment:
+      TZ: America/Sao_Paulo
+      SPRING_BOOT_ENVIRONMENT: Production
+    volumes:
+      - ../:/parking
+      - ~/.m2:/root/.m2
+    ports:
+      - "8082:8082"
+    command: mvn clean spring-boot:run
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    networks:
+      - mongo-compose-network
 networks: 
     mongo-compose-network:
       driver: bridge

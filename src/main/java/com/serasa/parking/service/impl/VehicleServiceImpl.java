@@ -1,17 +1,22 @@
 package com.serasa.parking.service.impl;
 
+import com.mongodb.DuplicateKeyException;
 import com.serasa.parking.dto.VehicleDTO;
 import com.serasa.parking.model.Client;
 import com.serasa.parking.model.Vehicle;
 import com.serasa.parking.repository.ClientRepository;
 import com.serasa.parking.repository.VehicleRepository;
 import com.serasa.parking.service.VehicleService;
+import com.serasa.parking.service.exception.ObjectDuplicateException;
 import com.serasa.parking.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author vinicius.montouro
+ */
 @Service
 public class VehicleServiceImpl implements VehicleService {
 
@@ -53,13 +58,17 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public void saveVehicle(Vehicle vehicle) {
-        Client client = clientRepository
-                .findById(vehicle
-                        .getClient()
-                        .getCpf())
-                .orElseThrow(() -> new ObjectNotFoundException("Object not found"));
-        vehicle.setClient(client);
-        vehicleRepository.insert(vehicle);
+        try{
+            Client client = clientRepository
+                    .findById(vehicle
+                            .getClient()
+                            .getCpf())
+                    .orElseThrow(() -> new ObjectNotFoundException("Object not found"));
+            vehicle.setClient(client);
+            vehicleRepository.insert(vehicle);
+        }catch(DuplicateKeyException e){
+            throw new ObjectDuplicateException("Object exist in database");
+        }
     }
 
     @Override
