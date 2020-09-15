@@ -39,6 +39,7 @@ public class StayResource {
      */
     @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
+
     /**
      * Save stay
      * @param stayDTO
