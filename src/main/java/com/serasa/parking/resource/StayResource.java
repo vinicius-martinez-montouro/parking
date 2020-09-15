@@ -144,4 +144,17 @@ public class StayResource {
         stayService.deleteStayById(id);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * Find all stays
+     * @return Stays list
+     */
+    @Operation(summary = "Count all vehicles Stays")
+    @GetMapping
+    public ResponseEntity<Long> countVehicles(){
+        return ResponseEntity.ok()
+                .body(stayService
+                        .countByOutStayFalse());
+    }
+
 }
