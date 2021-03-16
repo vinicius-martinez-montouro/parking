@@ -4,8 +4,8 @@ import com.mongodb.DuplicateKeyException;
 import com.serasa.parking.dto.VehicleDTO;
 import com.serasa.parking.model.Client;
 import com.serasa.parking.model.Vehicle;
-import com.serasa.parking.repository.ClientRepository;
 import com.serasa.parking.repository.VehicleRepository;
+import com.serasa.parking.service.ClientService;
 import com.serasa.parking.service.VehicleService;
 import com.serasa.parking.service.exception.ObjectDuplicateException;
 import com.serasa.parking.service.exception.ObjectNotFoundException;
@@ -24,7 +24,7 @@ public class VehicleServiceImpl implements VehicleService {
     private VehicleRepository vehicleRepository;
 
     @Autowired
-    private ClientRepository clientRepository;
+    private ClientService clientService;
 
     @Override
     public List<Vehicle> findAll() {
@@ -59,11 +59,10 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public void saveVehicle(Vehicle vehicle) {
         try{
-            Client client = clientRepository
+            Client client = clientService
                     .findById(vehicle
                             .getClient()
-                            .getCpf())
-                    .orElseThrow(() -> new ObjectNotFoundException("Object not found"));
+                            .getCpf());
             vehicle.setClient(client);
             vehicleRepository.insert(vehicle);
         }catch(DuplicateKeyException e){
@@ -73,11 +72,10 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public void updateVehicle(Vehicle vehicle) {
-        Client client = clientRepository
+        Client client = clientService
                 .findById(vehicle
                         .getClient()
-                        .getCpf())
-                .orElseThrow(() -> new ObjectNotFoundException("Object not found"));
+                        .getCpf());
         vehicle.setClient(client);
         Vehicle newVehicle = vehicleRepository.findById(vehicle.getBoard())
                                 .map(obj ->
